@@ -22,13 +22,26 @@ export default function App() {
   }
 
   useEffect(() => {
+    console.log(currentStepData.options)
     if (currentStepData.user) return
+    // else if (currentStepData.options) {
+    //   const { options } = currentStepData
+    //   setTimeout(() => {
+    //     const message = options.map(item => <p key={uuid()}>{item.label}</p>)
+    //     setAllMessages(prev => [...prev, message])
+    //     setTrigger(currentStepData.trigger)
+    //   }, 1000)
+    // }
     setTimeout(() => {
-      setAllMessages(prev => [...prev, currentStepData.message])
+      let message = currentStepData.message
+      if (currentStepData.message.includes('{previousValue}')) {
+        message = currentStepData.message.replace('{previousValue}', userMessage)
+      }
+      setAllMessages(prev => [...prev, message])
       setTrigger(currentStepData.trigger)
     }, 1000)
-  }, [currentStepData])
-  console.log(trigger)
+  }, [currentStepData, userMessage])
+
   return (
     <div>
       {allMessages.map(message => <p key={uuid()}>{message}</p>)}

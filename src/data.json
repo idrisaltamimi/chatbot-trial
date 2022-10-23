@@ -21,7 +21,6 @@
   },
   {
     "id": "order",
-    "user": true,
     "options": [
       {
         "value": "Pepperoni Pizza",
