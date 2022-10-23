@@ -28,22 +28,18 @@
     "message": [
       {
         "value": "Pepperoni Pizza",
-        "label": "Pepperoni Pizza",
         "trigger": "Pepperoni Pizza"
       },
       {
         "value": "BBQ Chicken Pizza",
-        "label": "BBQ Chicken Pizza",
         "trigger": "BBQ Chicken Pizza"
       },
       {
         "value": "Vegetarian Pizza",
-        "label": "Vegetarian Pizza",
         "trigger": "Vegetarian Pizza"
       },
       {
         "value": "Margherita Pizza",
-        "label": "Margherita Pizza",
         "trigger": "Margherita Pizza"
       }
     ],
@@ -102,6 +98,24 @@
     "id": "Pepperoni Pizza final order",
     "user": false,
     "message": "Your final order is Pepperoni Pizza with {previousValue}",
-    "end": true
+    "trigger": "end"
+  },
+  {
+    "id": "BBQ Chicken Pizza final order",
+    "user": false,
+    "message": "Your final order is BBQ Chicken Pizza with {previousValue}",
+    "trigger": "end"
+  },
+  {
+    "id": "Vegetarian Pizza final order",
+    "user": false,
+    "message": "Your final order is Vegetarian Pizza with {previousValue}",
+    "trigger": "end"
+  },
+  {
+    "id": "Margherita Pizza final order",
+    "user": false,
+    "message": "Your final order is Margherita Pizza with {previousValue}",
+    "trigger": "end"
   }
 ]

@@ -7,7 +7,7 @@ export default function App() {
   const [userMessage, setUserMessage] = useState('')
   const [allMessages, setAllMessages] = useState([])
   const inputRef = useRef(null)
-  const currentStepData = steps.find(({ id }) => id === trigger)
+  let currentStepData = steps.find(({ id }) => id === trigger)
 
   const handleChange = (event) => {
     setUserMessage(event.target.value)
@@ -15,6 +15,7 @@ export default function App() {
 
   const addMessage = (event) => {
     event.preventDefault()
+    if (!currentStepData.user) return
     setAllMessages(prev => [...prev, userMessage])
     if (currentStepData.trigger.includes('{previousValue}')) {
       return setTrigger(userMessage)
@@ -26,17 +27,22 @@ export default function App() {
 
   useEffect(() => {
     if (trigger === null) return
+    else if (trigger === 'end') {
+      return setAllMessages(prev => [...prev, ''])
+    }
     else if (currentStepData.user === true) {
       return inputRef.current.focus()
     }
+
     setTimeout(() => {
       let message = currentStepData.message
-      if (currentStepData.message.includes('{previousValue}')) {
+
+      if (message !== undefined && message.includes('{previousValue}')) {
         message = currentStepData.message.replace('{previousValue}', userMessage)
       }
       else if (typeof message === 'object') {
         return message.map(item => {
-          setAllMessages(prev => [...prev, item.label])
+          setAllMessages(prev => [...prev, item.value])
           return setTrigger(currentStepData.trigger)
         })
       }
@@ -49,7 +55,7 @@ export default function App() {
     <div>
       {allMessages.map(message => <p key={uuid()}>{message}</p>)}
       <form>
-        <input ref={inputRef} type="text" name="todo" value={userMessage} onChange={handleChange} />
+        <input ref={inputRef} type="text" name="message" value={userMessage} onChange={handleChange} />
         <button onClick={addMessage}>send</button>
       </form>
     </div>
