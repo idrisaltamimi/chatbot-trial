@@ -4,23 +4,27 @@ import steps from './data.json'
 
 export default function App() {
   const [trigger, setTrigger] = useState(null)
-  const [userMessage, setUserMessage] = useState('')
+  const [userInput, setUserInput] = useState('')
+  const userRef = useRef(null)
   const [allMessages, setAllMessages] = useState([])
   const inputRef = useRef(null)
   let currentStepData = steps.find(({ id }) => id === trigger)
 
   const handleChange = (event) => {
-    setUserMessage(event.target.value)
+    setUserInput(event.target.value)
   }
 
   const addMessage = (event) => {
     event.preventDefault()
     if (!currentStepData.user) return
-    setAllMessages(prev => [...prev, userMessage])
+    userRef.current = userInput
+    setAllMessages(prev => [...prev, userInput])
     if (currentStepData.trigger.includes('{previousValue}')) {
-      return setTrigger(userMessage)
+      setTrigger(userInput)
+      return setUserInput('')
     }
     setTrigger(currentStepData.trigger)
+    setUserInput('')
   }
 
   useEffect(() => setTrigger(steps[0].id), [])
@@ -38,7 +42,7 @@ export default function App() {
       let message = currentStepData.message
 
       if (message !== undefined && message.includes('{previousValue}')) {
-        message = currentStepData.message.replace('{previousValue}', userMessage)
+        message = currentStepData.message.replace('{previousValue}', userRef.current)
       }
       else if (typeof message === 'object') {
         return message.map(item => {
@@ -49,13 +53,13 @@ export default function App() {
       setAllMessages(prev => [...prev, message])
       setTrigger(currentStepData.trigger)
     }, 1000)
-  }, [currentStepData, userMessage, trigger])
+  }, [currentStepData, trigger])
 
   return (
     <div>
       {allMessages.map(message => <p key={uuid()}>{message}</p>)}
       <form>
-        <input ref={inputRef} type="text" name="message" value={userMessage} onChange={handleChange} />
+        <input ref={inputRef} type="text" name="message" value={userInput} onChange={handleChange} />
         <button onClick={addMessage}>send</button>
       </form>
     </div>
