@@ -3,8 +3,8 @@ import uuid from 'react-uuid'
 import steps from './data.json'
 
 export default function App() {
-  const [trigger, setTrigger] = useState(steps[0].id)
-  const [userMessage, setUserMessage] = useState("")
+  const [trigger, setTrigger] = useState(null)
+  const [userMessage, setUserMessage] = useState('')
   const [allMessages, setAllMessages] = useState([])
   const inputRef = useRef(null)
   const currentStepData = steps.find(({ id }) => id === trigger)
@@ -16,31 +16,34 @@ export default function App() {
   const addMessage = (event) => {
     event.preventDefault()
     setAllMessages(prev => [...prev, userMessage])
+    if (currentStepData.trigger.includes('{previousValue}')) {
+      return setTrigger(userMessage)
+    }
     setTrigger(currentStepData.trigger)
-    // setUserMessage("")
-    inputRef.current.focus()
   }
 
+  useEffect(() => setTrigger(steps[0].id), [])
+
   useEffect(() => {
-    console.log(currentStepData.options)
-    if (currentStepData.user) return
-    // else if (currentStepData.options) {
-    //   const { options } = currentStepData
-    //   setTimeout(() => {
-    //     const message = options.map(item => <p key={uuid()}>{item.label}</p>)
-    //     setAllMessages(prev => [...prev, message])
-    //     setTrigger(currentStepData.trigger)
-    //   }, 1000)
-    // }
+    if (trigger === null) return
+    else if (currentStepData.user === true) {
+      return inputRef.current.focus()
+    }
     setTimeout(() => {
       let message = currentStepData.message
       if (currentStepData.message.includes('{previousValue}')) {
         message = currentStepData.message.replace('{previousValue}', userMessage)
       }
+      else if (typeof message === 'object') {
+        return message.map(item => {
+          setAllMessages(prev => [...prev, item.label])
+          return setTrigger(currentStepData.trigger)
+        })
+      }
       setAllMessages(prev => [...prev, message])
       setTrigger(currentStepData.trigger)
     }, 1000)
-  }, [currentStepData, userMessage])
+  }, [currentStepData, userMessage, trigger])
 
   return (
     <div>

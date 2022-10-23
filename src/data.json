@@ -1,11 +1,13 @@
 [
   {
     "id": "Greet",
+    "user": false,
     "message": "Hello, Welcome to Sam Pizza",
     "trigger": "Done"
   },
   {
     "id": "Done",
+    "user": false,
     "message": "Please enter your name",
     "trigger": "waiting1"
   },
@@ -16,51 +18,63 @@
   },
   {
     "id": "Name",
+    "user": false,
     "message": "Hi {previousValue}, Please choose your order",
     "trigger": "order"
   },
   {
     "id": "order",
-    "options": [
+    "user": false,
+    "message": [
       {
         "value": "Pepperoni Pizza",
         "label": "Pepperoni Pizza",
-        "trigger": "Pepperoni toppings"
+        "trigger": "Pepperoni Pizza"
       },
       {
         "value": "BBQ Chicken Pizza",
         "label": "BBQ Chicken Pizza",
-        "trigger": "BBQ Chicken toppings"
+        "trigger": "BBQ Chicken Pizza"
       },
       {
         "value": "Vegetarian Pizza",
         "label": "Vegetarian Pizza",
-        "trigger": "Vegetarian toppings"
+        "trigger": "Vegetarian Pizza"
       },
       {
         "value": "Margherita Pizza",
         "label": "Margherita Pizza",
-        "trigger": "Margherita toppings"
+        "trigger": "Margherita Pizza"
       }
-    ]
+    ],
+    "trigger": "Choose toppings"
   },
   {
-    "id": "Pepperoni toppings",
+    "id": "Choose toppings",
+    "user": true,
+    "trigger": "{previousValue}"
+  },
+  {
+    "id": "Pepperoni Pizza",
+    "user": false,
     "message": "Choose your Pepperoni Pizza toppings",
     "trigger": "Pepperoni toppings choice"
   },
   {
-    "id": "BBQ Chicken toppings",
+    "id": "BBQ Chicken Pizza",
+    "user": false,
     "message": "Choose your BBQ Chicken Pizza toppings",
     "trigger": "BBQ Chicken toppings choice"
   },
   {
-    "id": "Vegetarian toppings",
+    "id": "Vegetarian Pizza",
+    "user": false,
     "message": "Choose your Vegetarian Pizza toppings",
     "trigger": "Vegetarian toppings choice"
   },
   {
-    "id": "Margherita toppings",
+    "id": "Margherita Pizza",
+    "user": false,
     "message": "Choose your Margherita Pizza toppings",
     "trigger": "Margherita toppings choice"
   },
@@ -86,6 +100,7 @@
   },
   {
     "id": "Pepperoni Pizza final order",
+    "user": false,
     "message": "Your final order is Pepperoni Pizza with {previousValue}",
     "end": true
   }
